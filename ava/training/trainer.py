@@ -4,7 +4,17 @@ import torch
 from tqdm.notebook import tqdm
 from .metrics import evaluate_model
 
-def train_model(model, train_dataloader, optimizer, scheduler, num_epochs, device, eval_dataloader=None):
+def train_model(
+    model, 
+    train_dataloader, 
+    optimizer, 
+    scheduler, 
+    num_epochs, 
+    device, 
+    eval_dataloader=None
+):
+    
+    print('✨ Starting training...')
     model.train()
     
     for epoch in range(num_epochs):
@@ -38,10 +48,10 @@ def train_model(model, train_dataloader, optimizer, scheduler, num_epochs, devic
             
         if eval_dataloader is not None:
             eval_loss = evaluate_model(model, eval_dataloader, device)
-            print(f'Epoch {epoch + 1}/{num_epochs}, Training Loss: {total_loss / len(train_dataloader)}, Eval Loss: {eval_loss}')
+            print(f'🍀 Epoch {epoch + 1}/{num_epochs}, Training Loss: {total_loss / len(train_dataloader)} | Eval Loss: {eval_loss}')
 
         else:
-            print(f'Epoch {epoch + 1}/{num_epochs}, Training Loss: {total_loss / len(train_dataloader)}')
+            print(f'🍀 Epoch {epoch + 1}/{num_epochs}, Training Loss: {total_loss / len(train_dataloader)}')
             
         torch.save({
             'epoch':                epoch,
@@ -51,6 +61,7 @@ def train_model(model, train_dataloader, optimizer, scheduler, num_epochs, devic
             'loss':                 total_loss / len(train_dataloader),
         }, f'ava_model_epoch_{epoch + 1}.pt')
         
-        print(f"Checkpoint saved as ava_model_epoch_{epoch + 1}.pt")
+        print(f'💾 Checkpoint saved as ava_model_epoch_{epoch + 1}.pt')
+        print('🚀 Training complete! ')
     
     return model
