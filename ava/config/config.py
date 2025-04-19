@@ -38,10 +38,15 @@ class AvaConfig:
         self.attention_dropout = attention_dropout
         self.model_type = model_type
         self.predefined_models = [
-            'small',
-            'medium',
-            'base',
-            '1b'
+            '100m',
+            '500m',
+            '1b',
+            '3b',
+            '7b',
+            '13b',
+            '30b',
+            '65b',
+            '100b'
         ]
         
         if 'head_dim' in kwargs:
@@ -58,43 +63,93 @@ class AvaConfig:
         return {k: v for k, v in self.__dict__.items()}
 
 
-    def apply_for(self, model = 'base'):
+    def apply_for(self, model = '7b'):
         if model not in self.predefined_models:
             raise ValueError(f'Configuration for "{model}" is not defined.')
         
-        if model == 'small':
+        # Tiny models (Edge devices, IoT, offline agents, chatbots)
+        if model == '100m':
             self.hidden_size = 768
             self.intermediate_size = 3072
             self.num_hidden_layers = 6
             self.num_attention_heads = 12
-            self.max_position_embeddings = 512
+            self.max_position_embeddings = 2048
             self.head_dim = 64
             self.kv_heads = 4
 
-        elif model == 'medium':
+        elif model == '500m':
             self.hidden_size = 1024
             self.intermediate_size = 4096
-            self.num_hidden_layers = 12
+            self.num_hidden_layers = 8
             self.num_attention_heads = 16
-            self.max_position_embeddings = 1024
+            self.max_position_embeddings = 2048
             self.head_dim = 64
-            self.kv_heads = 8
+            self.kv_heads = 4
 
-        elif model == 'base':
-            self.hidden_size = 1536
-            self.intermediate_size = 6144
+        # Small models (Mobile apps, personal assistants, summarization)
+        elif model == '1b':
+            self.hidden_size = 1280
+            self.intermediate_size = 5120
             self.num_hidden_layers = 12
             self.num_attention_heads = 16
-            self.max_position_embeddings = 2048
-            self.head_dim = 96
+            self.max_position_embeddings = 4096
+            self.head_dim = 80
             self.kv_heads = 8
 
-        elif model == '1b':
-            self.hidden_size = 2048
-            self.intermediate_size = 8192
-            self.num_hidden_layers = 16
+        elif model == '3b':
+            self.hidden_size = 1600
+            self.intermediate_size = 6400
+            self.num_hidden_layers = 24
             self.num_attention_heads = 16
-            self.max_position_embeddings = 2048
+            self.max_position_embeddings = 4096
+            self.head_dim = 100
+            self.kv_heads = 8
+
+        # Medium models (Coding, reasoning, multi-turn chat, translation)
+        elif model == '7b':
+            self.hidden_size = 4096
+            self.intermediate_size = 11008
+            self.num_hidden_layers = 32
+            self.num_attention_heads = 32
+            self.max_position_embeddings = 8192
+            self.head_dim = 128
+            self.kv_heads = 8
+
+        elif model == '13b':
+            self.hidden_size = 5120
+            self.intermediate_size = 13824
+            self.num_hidden_layers = 40
+            self.num_attention_heads = 40
+            self.max_position_embeddings = 8192
+            self.head_dim = 128
+            self.kv_heads = 8
+
+        # Large models (Research, enterprise-level applications)
+        elif model == '30b':
+            self.hidden_size = 6656
+            self.intermediate_size = 17920
+            self.num_hidden_layers = 60
+            self.num_attention_heads = 52
+            self.max_position_embeddings = 8192
+            self.head_dim = 128
+            self.kv_heads = 8
+
+        elif model == '65b':
+            self.hidden_size = 8192
+            self.intermediate_size = 22016
+            self.num_hidden_layers = 80
+            self.num_attention_heads = 64
+            self.max_position_embeddings = 8192
+            self.head_dim = 128
+            self.kv_heads = 8
+
+        # Massive models (AGI research, cutting-edge LLMs)
+        elif model == '100b':
+            self.hidden_size = 12288
+            self.intermediate_size = 33024
+            self.num_hidden_layers = 96
+            self.num_attention_heads = 96
+            self.max_position_embeddings = 16384
             self.head_dim = 128
             self.kv_heads = 8
 
