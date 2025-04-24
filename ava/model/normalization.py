@@ -1,14 +1,10 @@
 import torch
-
 import torch.nn as nn
 
+
 class AvaRMSNorm(nn.Module):
-    def __init__(
-            self, 
-            hidden_size: int, 
-            epsilon: float = 1e-5
-        ):
-        
+    def __init__(self, hidden_size: int, epsilon: float = 1e-5):
+
         super().__init__()
         self.weight = nn.Parameter(torch.ones(hidden_size))
         self.epsilon = epsilon
