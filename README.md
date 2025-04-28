@@ -85,8 +85,22 @@ Ava is intended for educational and personal use. Contributions are welcome to e
 
 ---
 
+## 💖 Support Ava's Development
+
+If you find Ava-LLM valuable and want to support its growth, you can donate USDT directly!
+
+**USDT (TRC20) Wallet Address**:  
+`TGNZUGsTb5PLCPVyN9Tc22QrFa1M69ZDJ5`
+
+> Every donation, no matter how small, helps keep Ava independent and evolving.
+
+Thank you for believing in open, independent AI development! 🚀
+
+
+
 ## Author & Credits
 
 Created and maintained by Nika Kudukhashvili. Ava represents an ongoing project in building fully independent and explainable language models.
 
 For questions or contributions, visit: [Github](https://github.com/Kuduxaaa)
+
