@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-
+# ========= NEEDS REVIEW ===========
 class QuantizedLinear(nn.Module):
     """Quantized linear layer for inference"""
 
