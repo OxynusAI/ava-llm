@@ -316,9 +316,27 @@ class AvaForCausalLM(nn.Module):
             shift_logits = logits[..., :-1, :].contiguous()
             shift_labels = labels[..., 1:].contiguous()
 
+            if torch.any(shift_labels >= self.config.vocab_size):
+                offending = shift_labels[shift_labels >= self.config.vocab_size]
+                raise ValueError(
+                    f"Found token IDs >= vocab_size ({self.config.vocab_size}): {offending.unique().tolist()}"
+                )
+            
+            if torch.any(shift_labels < 0) and self.config.pad_token_id is not None:
+                bad_neg = shift_labels[(shift_labels < 0) & (shift_labels != self.config.pad_token_id)]
+                
+                if bad_neg.numel() > 0:
+                    raise ValueError(
+                        f"Found negative token IDs (not pad_token_id): {bad_neg.unique().tolist()}"
+                    )
+                
             loss_fct = nn.CrossEntropyLoss(ignore_index=self.config.pad_token_id)
             shift_labels = shift_labels.to(shift_logits.device)
             loss = loss_fct(shift_logits.view(-1, self.config.vocab_size), shift_labels.view(-1))
+
+            if torch.isnan(loss) or torch.isinf(loss):
+                raise RuntimeError("Loss is NaN or Inf! Check your data and model outputs.")
+
 
         return {
             "loss": loss,
